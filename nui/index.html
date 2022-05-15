@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Notify items</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;          
+            width: 100vw;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
+            background: transparent !important;
+            overflow: hidden;
+
+        }
+
+        body::-webkit-scrollbar {
+            display: none !important;
+        }
+
+        .notify-container {
+            margin-bottom: 32px;
+            width: 125px;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.379);
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 0 10px black;
+            display: none;
+            margin: 8px;
+        }
+
+        .amount {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            background-color: rgb(82, 70, 76);
+            width: 32px;
+            height: 32px;
+            right: -4px;
+            top: -2px;
+            transform: translateX(10%);
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: inset 0px 0px 4px black;
+        }
+
+        .nome-item {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            height: 24px;
+            border-end-end-radius: 10px;
+            border-end-start-radius: 10px;
+            overflow: none;
+        }
+
+        .image {
+            position: absolute;
+            background-size: contain;
+            background-repeat: no-repeat;
+            height: 95px;
+            width: 95px;
+            padding: 8px;
+            box-sizing: border-box;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .nome-item span {
+            color: white;
+            padding: 4px;
+            font-size: 0.95em;
+            text-overflow: ellipsis;
+        }
+
+        .action {
+            top: 0;
+            width: 100%;
+            left: 0;
+            position: absolute;
+            border-start-start-radius: 10px;
+            border-top-right-radius: 10px;
+            height: 24px;
+            padding-top: 4px;
+            padding-left: 8px;
+            background-color: rgba(0, 0, 0, 0.221);
+            box-sizing: border-box;
+            color: white;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        $(() => {
+            window.onmessage = ({ data }) => {
+                const { action, item, index, action2, amount } = data;
+                if (action == "notify_item") {
+
+                    $(`<div class="notify-container">
+                        <div class="action"><span></span></div>
+                        <div class="image"></div>
+                        <div class="amount"><span></span></div>
+                        <div class="nome-item"><span></span></div>
+                    </div>`).appendTo($("body"))
+
+                    $(".action > span").text(action2);
+                    $(".image").css("background-image", `url("https://cfx-nui-vrp/gui/assets/items/${index}.png")`);
+                    $(".amount > span").text(amount)
+                    $(".nome-item > span").text(item)
+                    $(".notify-container").fadeIn(750, function () {
+                        setTimeout(() => {
+                            $(this).fadeOut(750, function () {
+                                $(this).remove();
+                            })
+                        }, 3000)
+                    });
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
